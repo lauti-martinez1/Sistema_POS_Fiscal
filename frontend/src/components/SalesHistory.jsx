@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import { TrendingUp, ReceiptText, CalendarDays, Wallet, Printer } from "lucide-react";
 import { printTicket, printInvoice } from "../utils/printer"; 
+import toast from "react-hot-toast";
 
 export default function SalesHistory() {
   const [sales, setSales] = useState([]);
@@ -28,10 +29,19 @@ export default function SalesHistory() {
   const totalHistorico = sales.reduce((acc, sale) => acc + sale.total, 0);
 
   const handleReprint = (sale, tipo) => {
+    // 🚀 Abrimos la ventana inmediatamente al hacer clic
+    const printWindow = window.open('', '_blank');
+    
+    if (!printWindow) {
+      toast.error("Por favor, habilita los pop-ups en el navegador para imprimir.");
+      return;
+    }
+
     const cartItems = sale.items ? JSON.parse(sale.items) : [];
 
     if (tipo === 'factura') {
       printInvoice(
+        printWindow, 
         cartItems, 
         sale.total, 
         sale.customer_name, 
@@ -40,12 +50,11 @@ export default function SalesHistory() {
         sale.ID
       );
     } else {
-      printTicket(cartItems, sale.total);
+      printTicket(printWindow, cartItems, sale.total, sale.ID);
     }
   };
 
   return (
-    /* ✅ SOLUCIÓN: Sacamos h-full y overflow-auto de acá para que use el scroll maestro del POS */
     <div className="bg-zinc-900 rounded-3xl p-8 shadow-2xl">
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-3xl font-black">Cierre de Caja</h2>
