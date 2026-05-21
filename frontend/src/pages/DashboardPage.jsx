@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import api from "../services/api"
-import { createSales } from "../services/sales"
 import toast from "react-hot-toast"
 
 function DashboardPage() {
@@ -12,12 +11,12 @@ function DashboardPage() {
     const fetchData = async () => {
       try {
         const [salesRes, productsRes] = await Promise.all([
-          createSales(),
+          api.get("/sales"), // Pedimos las ventas correctamente con GET
           api.get("/products"),
         ])
 
-        setSales(salesRes)
-        setProducts(productsRes.data)
+        setSales(salesRes.data || [])
+        setProducts(productsRes.data || [])
       } catch (err) {
         console.error(err)
         toast.error("Error al cargar datos")
@@ -30,7 +29,8 @@ function DashboardPage() {
   }, [])
 
   const totalRevenue = sales.reduce((acc, sale) => {
-    return acc + (sale.Total || 0)
+    // Agregamos sale.total (minúscula) por cómo lo devuelve Go normalmente
+    return acc + (sale.total || sale.Total || 0) 
   }, 0)
 
   const totalSales = sales.length
@@ -126,7 +126,7 @@ function DashboardPage() {
                     </div>
 
                     <div className="font-bold text-green-600">
-                      ${sale.Total?.toFixed(2) || "0.00"}
+                      ${(sale.total || sale.Total || 0).toFixed(2)}
                     </div>
                   </div>
                 ))
