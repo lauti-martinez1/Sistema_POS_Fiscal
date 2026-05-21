@@ -108,6 +108,15 @@ function POSPage() {
   const isCustomerValid = customerName.trim() !== "" && customerLastName.trim() !== "" && customerDocument.length >= 7;
 
   const handleConfirmSale = async (tipoComprobante) => { 
+    // 🚀 MAGIA ANTI-BLOQUEO: Abrimos la ventana inmediatamente al hacer clic
+    const printWindow = window.open('', '_blank');
+    
+    // Si Chrome bloqueó el pop-up agresivamente, avisamos al cajero
+    if (!printWindow) {
+      toast.error("Por favor, habilita los pop-ups en tu navegador para imprimir.");
+      return;
+    }
+
     const nombreCompleto = `${customerName} ${customerLastName}`.trim();
 
     const saleData = {
@@ -131,11 +140,11 @@ function POSPage() {
       setBackendOnline(true) 
       const saleId = res.data.ID;
 
+      // Le pasamos la ventana abierta a nuestras funciones de impresión
       if (tipoComprobante === 'factura') {
-        printInvoice(cart, total, nombreCompleto, customerDocument, paymentType, saleId);
+        printInvoice(printWindow, cart, total, nombreCompleto, customerDocument, paymentType, saleId);
       } else {
-        // Le agregamos el saleId al final
-        printTicket(cart, total, saleId); 
+        printTicket(printWindow, cart, total, saleId); 
       }
 
       clearCart(); 
@@ -148,6 +157,7 @@ function POSPage() {
 
       if (paymentType !== "Efectivo") {
         toast.error("Error: Los pagos digitales requieren conexión. Seleccione Efectivo.");
+        printWindow.close(); // Cerramos la pestaña vacía porque se canceló la venta
         return; 
       }
 
@@ -164,11 +174,11 @@ function POSPage() {
           </div>
         ));
 
+        // En offline, también usamos la ventana abierta
         if (tipoComprobante === 'factura') {
-          printInvoice(cart, total, nombreCompleto, customerDocument, paymentType, "OFFLINE");
+          printInvoice(printWindow, cart, total, nombreCompleto, customerDocument, paymentType, "OFFLINE");
         } else {
-          // Le avisamos explícitamente que es OFFLINE
-          printTicket(cart, total, "OFFLINE"); 
+          printTicket(printWindow, cart, total, "OFFLINE"); 
         }
 
         clearCart();
@@ -177,6 +187,7 @@ function POSPage() {
       } catch (dbErr) {
         toast.error("Error crítico al guardar en IndexedDB");
         console.error(dbErr);
+        printWindow.close(); // Cerramos si hubo un error crítico
       }
     } finally {
       if (paymentType === "Efectivo" || backendOnline) {
