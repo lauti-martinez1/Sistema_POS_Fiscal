@@ -3,12 +3,12 @@ import { createSale } from "./salesOffline"
 
 export function startOfflineSync() {
   
-  // 🔄 Función que hace el trabajo sucio de revisar y subir las ventas
+  // 🔄 Función que hace el trabajo de revisar y subir las ventas
   async function realizarSincronizacion() {
     try {
       const offlineSales = await getOfflineSales()
       
-      // Si la base de datos del navegador está vacía, no hacemos nada
+      // Si la base de datos del navegador está vacía, no hace nada
       if (offlineSales.length === 0) return
 
       console.log(`🔄 Detectadas ${offlineSales.length} ventas offline. Intentando sincronizar de fondo...`)
@@ -39,6 +39,6 @@ export function startOfflineSync() {
   // 1. Por las dudas, mantenemos el disparador tradicional por si se corta el Wi-Fi
   window.addEventListener("online", realizarSincronizacion)
 
-  // 2. 🚀 SOLUCIÓN LOCAL: Ejecutar una revisión automática cada 10 segundos
+  // 2. SOLUCIÓN LOCAL: Ejecutar una revisión automática cada 10 segundos
   setInterval(realizarSincronizacion, 10000)
 }

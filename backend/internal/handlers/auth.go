@@ -23,19 +23,19 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	// 🔐 FILTRO DE CREDENCIALES FIJAS
+	// FILTRO DE CREDENCIALES FIJAS
 	isValidUser := (req.Email == "usuario@gmail.com" && req.Password == "1234") ||
 		(req.Email == "admin@gmail.com" && req.Password == "admin123")
 
 	if !isValidUser {
-		// Si no coincide ninguno, devolvemos un 401 (No autorizado) y el cartel de error
+		// Si no coincide ninguno, devuelve un 401 (No autorizado) y el cartel de error
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "Usuario o contraseña incorrectos",
 		})
 		return
 	}
 
-	// Si los datos son correctos, le devolvemos el OK y el token falso
+	// Si los datos son correctos, le devuelve el OK y el token falso
 	c.JSON(http.StatusOK, gin.H{
 		"message": "login ok",
 		"token":   "token-falso-de-prueba-rotiseria-uda", // El Frontend guarda esto en el localStorage

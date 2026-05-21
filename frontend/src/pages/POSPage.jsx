@@ -21,7 +21,7 @@ import { printTicket, printInvoice } from "../utils/printer"
 import AdminPanel from "../components/AdminPanel"
 import SalesHistory from "../components/SalesHistory"
 
-// 🌐 CONEXIÓN OFFLINE
+// CONEXIÓN OFFLINE
 import { saveOfflineSale } from "../offline/db"
 
 function POSPage() {
@@ -30,7 +30,7 @@ function POSPage() {
   const [category, setCategory] = useState("all")
   const [view, setView] = useState("pos") 
 
-  // 📡 ESTADO DE CONEXIÓN CON EL BACKEND DE GO
+  // ESTADO DE CONEXIÓN CON EL BACKEND DE GO
   const [backendOnline, setBackendOnline] = useState(true)
 
   // ESTADOS DEL CHECKOUT
@@ -134,7 +134,7 @@ function POSPage() {
       if (tipoComprobante === 'factura') {
         printInvoice(cart, total, nombreCompleto, customerDocument, paymentType, saleId);
       } else {
-        // 👇 Le agregamos el saleId al final
+        // Le agregamos el saleId al final
         printTicket(cart, total, saleId); 
       }
 
@@ -167,7 +167,7 @@ function POSPage() {
         if (tipoComprobante === 'factura') {
           printInvoice(cart, total, nombreCompleto, customerDocument, paymentType, "OFFLINE");
         } else {
-          // 👇 Le avisamos explícitamente que es OFFLINE
+          // Le avisamos explícitamente que es OFFLINE
           printTicket(cart, total, "OFFLINE"); 
         }
 
@@ -266,7 +266,7 @@ function POSPage() {
             <div className="flex justify-between items-center mb-8">
               <div>
                 <p className="text-zinc-400 mb-2">Sistema de Ventas</p>
-                <h1 className="text-5xl font-black">POS Fiscal</h1>
+                <h1 className="text-5xl font-black">Rotiseria UDA</h1>
               </div>
               <div className="bg-zinc-900 rounded-2xl px-6 py-4 flex items-center gap-4 w-[450px] border border-zinc-800">
                 <Search className="text-zinc-500" />
@@ -290,13 +290,14 @@ function POSPage() {
               <div className="col-span-3">
                 <div className="grid grid-cols-3 gap-6">
                   {filteredProducts.map((product) => {
-                    // 💡 Evaluamos si el producto no tiene stock
+
+                    // Evalua si el producto no tiene stock
                     const estaAgotado = product.stock <= 0;
 
                     return (
                       <div
                         key={product.ID}
-                        // 🛠️ MODIFICACIÓN VISUAL DE LA TARJETA: Si está agotado, baja la opacidad y quita el hover
+                        //  MODIFICACIÓN VISUAL DE LA TARJETA: Si está agotado, baja la opacidad y quita el hover
                         className={`bg-zinc-900 border border-zinc-800 rounded-3xl p-5 transition duration-200 shadow-2xl flex flex-col 
                           ${estaAgotado 
                             ? "opacity-40 select-none border-zinc-800/60" 

@@ -13,10 +13,10 @@ func main() {
 	// Conectar base de datos
 	database.Connect()
 
-	// Crear servidor Gin
+	// Crear servidor Gin (escucha los pedidos que llegan desde el navegador, ve qué está pidiendo el cliente (como /products o /sales) y le envia una respuesta)
 	r := gin.Default()
 
-	// Habilitar CORS
+	// Habilitar CORS (como el front y el back estan en distintos puertos esto evita que chrome bloquee la conexion)
 	r.Use(cors.Default())
 
 	// Grupo API
@@ -41,6 +41,6 @@ func main() {
 		api.POST("/invoice", handlers.GenerateInvoice)
 	}
 
-	// Levantar servidor
+	// servidor
 	r.Run(":8080")
 }

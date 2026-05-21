@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import api from "../services/api"
-import { getSales } from "../services/sales"
+import { createSales } from "../services/sales"
 import toast from "react-hot-toast"
 
 function DashboardPage() {
@@ -12,7 +12,7 @@ function DashboardPage() {
     const fetchData = async () => {
       try {
         const [salesRes, productsRes] = await Promise.all([
-          getSales(),
+          createSales(),
           api.get("/products"),
         ])
 
