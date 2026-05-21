@@ -62,8 +62,6 @@ func main() {
 		api.GET("/sales", handlers.GetSales)
 		api.GET("/sales/:id", handlers.GetSale)
 
-		// Facturación
-		api.POST("/invoice", handlers.GenerateInvoice)
 	}
 
 	// Puerto dinámico para Railway
