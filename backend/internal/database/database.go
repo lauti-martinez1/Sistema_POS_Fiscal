@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -16,10 +17,11 @@ var DB *gorm.DB
 
 func Connect() {
 
+	// Intentar cargar .env (solo funciona localmente)
 	err := godotenv.Load()
 
 	if err != nil {
-		panic("Error loading .env")
+		log.Println(".env no encontrado, usando variables del sistema")
 	}
 
 	dsn := fmt.Sprintf(
@@ -44,4 +46,6 @@ func Connect() {
 		&models.Product{},
 		&models.Sale{},
 	)
+
+	log.Println("Base de datos conectada correctamente")
 }
