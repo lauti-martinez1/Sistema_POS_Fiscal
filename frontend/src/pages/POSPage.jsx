@@ -203,7 +203,7 @@ function POSPage() {
   };
 
   return (
-    <div className="h-screen bg-zinc-950 text-white flex flex-col-reverse lg:flex-row relative overflow-hidden">
+    <div className="h-[100dvh] bg-zinc-950 text-white flex flex-col-reverse lg:flex-row relative overflow-hidden">
       
       {/* MODAL DE CHECKOUT */}
       {showCheckoutModal && (
