@@ -203,7 +203,7 @@ function POSPage() {
   };
 
   return (
-    <div className="h-screen bg-zinc-950 text-white flex relative overflow-hidden">
+    <div className="h-screen bg-zinc-950 text-white flex flex-col-reverse lg:flex-row relative overflow-hidden">
       
       {/* MODAL DE CHECKOUT */}
       {showCheckoutModal && (
@@ -262,53 +262,52 @@ function POSPage() {
         </div>
       )}
 
-      {/* Sidebar */}
-      <div className="w-[90px] bg-black border-r border-zinc-800 flex flex-col items-center py-6 gap-6">
-        <button onClick={() => setView("pos")} className={`transition p-4 rounded-2xl ${view === "pos" ? "bg-white text-black" : "bg-zinc-900 hover:bg-zinc-800 text-white"}`}><Receipt size={30} /></button>
-        <button onClick={() => setView("history")} className={`transition p-4 rounded-2xl ${view === "history" ? "bg-white text-black" : "bg-zinc-900 hover:bg-zinc-800 text-white"}`}><History size={30} /></button>
-        <button onClick={() => setView("admin")} className={`transition p-4 rounded-2xl ${view === "admin" ? "bg-white text-black" : "bg-zinc-900 hover:bg-zinc-800 text-white"}`}><Package size={30} /></button>
-        <button onClick={() => { localStorage.removeItem("token"); localStorage.removeItem("user"); toast.success("Sesión cerrada correctamente"); window.location.reload(); }} className="mt-auto transition p-4 rounded-2xl bg-zinc-900 hover:bg-red-950/60 text-zinc-500 hover:text-red-400 border border-zinc-800 hover:border-red-900/50" title="Cerrar Sesión"><LogOut size={30} /></button>
+      {/* Sidebar - Ahora abajo en celu y a la izquierda en PC */}
+      <div className="w-full lg:w-[90px] h-[70px] lg:h-full bg-black border-t lg:border-t-0 lg:border-r border-zinc-800 flex flex-row lg:flex-col items-center justify-around lg:justify-start py-2 lg:py-6 gap-2 lg:gap-6 shrink-0 z-50">
+        <button onClick={() => setView("pos")} className={`transition p-3 lg:p-4 rounded-2xl ${view === "pos" ? "bg-white text-black" : "bg-zinc-900 hover:bg-zinc-800 text-white"}`}><Receipt size={24} className="lg:w-[30px] lg:h-[30px]" /></button>
+        <button onClick={() => setView("history")} className={`transition p-3 lg:p-4 rounded-2xl ${view === "history" ? "bg-white text-black" : "bg-zinc-900 hover:bg-zinc-800 text-white"}`}><History size={24} className="lg:w-[30px] lg:h-[30px]" /></button>
+        <button onClick={() => setView("admin")} className={`transition p-3 lg:p-4 rounded-2xl ${view === "admin" ? "bg-white text-black" : "bg-zinc-900 hover:bg-zinc-800 text-white"}`}><Package size={24} className="lg:w-[30px] lg:h-[30px]" /></button>
+        <button onClick={() => { localStorage.removeItem("token"); localStorage.removeItem("user"); toast.success("Sesión cerrada correctamente"); window.location.reload(); }} className="lg:mt-auto transition p-3 lg:p-4 rounded-2xl bg-zinc-900 hover:bg-red-950/60 text-zinc-500 hover:text-red-400 border border-zinc-800 hover:border-red-900/50" title="Cerrar Sesión"><LogOut size={24} className="lg:w-[30px] lg:h-[30px]" /></button>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-8 overflow-auto">
+      <div className="flex-1 p-4 lg:p-8 overflow-auto">
         {view === "pos" && (
           <>
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-8">
               <div>
-                <p className="text-zinc-400 mb-2">Sistema de Ventas</p>
-                <h1 className="text-5xl font-black">Rotiseria UDA</h1>
+                <p className="text-zinc-400 mb-1 lg:mb-2">Sistema de Ventas</p>
+                <h1 className="text-4xl lg:text-5xl font-black">Rotiseria UDA</h1>
               </div>
-              <div className="bg-zinc-900 rounded-2xl px-6 py-4 flex items-center gap-4 w-[450px] border border-zinc-800">
+              <div className="bg-zinc-900 rounded-2xl px-4 py-3 lg:px-6 lg:py-4 flex items-center gap-3 w-full lg:w-[450px] border border-zinc-800">
                 <Search className="text-zinc-500" />
-                <input type="text" placeholder="Buscar productos..." value={search} onChange={(e) => setSearch(e.target.value)} className="bg-transparent outline-none w-full text-lg" />
+                <input type="text" placeholder="Buscar productos..." value={search} onChange={(e) => setSearch(e.target.value)} className="bg-transparent outline-none w-full text-base lg:text-lg" />
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-6 mb-8">
-              <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 rounded-3xl p-6 border border-zinc-800 shadow-2xl"><p className="text-zinc-400 mb-3">Productos</p><h2 className="text-5xl font-black">{products.length}</h2></div>
-              <div className="bg-gradient-to-br from-green-900 to-green-700 rounded-3xl p-6 shadow-2xl"><p className="text-green-100 mb-3">Total Carrito</p><h2 className="text-5xl font-black">${total.toFixed(2)}</h2></div>
-              <div className="bg-gradient-to-br from-blue-900 to-blue-700 rounded-3xl p-6 shadow-2xl"><p className="text-blue-100 mb-3">Items</p><h2 className="text-5xl font-black">{cart.length}</h2></div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 mb-8">
+              <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 rounded-3xl p-6 border border-zinc-800 shadow-2xl"><p className="text-zinc-400 mb-3">Productos</p><h2 className="text-4xl lg:text-5xl font-black">{products.length}</h2></div>
+              <div className="bg-gradient-to-br from-green-900 to-green-700 rounded-3xl p-6 shadow-2xl"><p className="text-green-100 mb-3">Total Carrito</p><h2 className="text-4xl lg:text-5xl font-black">${total.toFixed(2)}</h2></div>
+              <div className="bg-gradient-to-br from-blue-900 to-blue-700 rounded-3xl p-6 shadow-2xl"><p className="text-blue-100 mb-3">Items</p><h2 className="text-4xl lg:text-5xl font-black">{cart.length}</h2></div>
             </div>
 
-            <div className="flex gap-4 mb-8 overflow-x-auto pb-2">
+            <div className="flex gap-4 mb-8 overflow-x-auto pb-2 scrollbar-hide">
               {categories.map((cat) => (
-                <button key={cat} onClick={() => setCategory(cat)} className={`px-6 py-3 rounded-2xl transition whitespace-nowrap font-semibold ${category === cat ? "bg-white text-black" : "bg-zinc-900 hover:bg-zinc-800 text-zinc-300"}`}>{cat === "all" ? "Todos" : cat}</button>
+                <button key={cat} onClick={() => setCategory(cat)} className={`px-5 py-2.5 lg:px-6 lg:py-3 rounded-2xl transition whitespace-nowrap font-semibold ${category === cat ? "bg-white text-black" : "bg-zinc-900 hover:bg-zinc-800 text-zinc-300"}`}>{cat === "all" ? "Todos" : cat}</button>
               ))}
             </div>
 
-            <div className="grid grid-cols-4 gap-8">
-              <div className="col-span-3">
-                <div className="grid grid-cols-3 gap-6">
+            <div className="flex flex-col lg:flex-row gap-8">
+              
+              {/* Productos */}
+              <div className="w-full lg:w-3/4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                   {filteredProducts.map((product) => {
-
-                    // Evalua si el producto no tiene stock
                     const estaAgotado = product.stock <= 0;
 
                     return (
                       <div
                         key={product.ID}
-                        //  MODIFICACIÓN VISUAL DE LA TARJETA: Si está agotado, baja la opacidad y quita el hover
                         className={`bg-zinc-900 border border-zinc-800 rounded-3xl p-5 transition duration-200 shadow-2xl flex flex-col 
                           ${estaAgotado 
                             ? "opacity-40 select-none border-zinc-800/60" 
@@ -322,7 +321,6 @@ function POSPage() {
                             <span className="text-zinc-500 text-lg font-bold">SIN FOTO</span>
                           )}
                           
-                          {/* 🏷️ BADGE INFORMATIVO EN LA IMAGEN */}
                           {estaAgotado && (
                             <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                               <span className="bg-red-600 text-white font-black text-xs px-3 py-1.5 rounded-xl tracking-wider uppercase shadow-md">Agotado</span>
@@ -332,19 +330,16 @@ function POSPage() {
                         
                         <div className="flex justify-between items-start mb-4 flex-1">
                           <div>
-                            <h2 className="text-2xl font-bold mb-2 leading-tight">{product.name}</h2>
-                            
-                            {/* 🛠️ TEXTO DE STOCK DINÁMICO */}
+                            <h2 className="text-xl lg:text-2xl font-bold mb-1 lg:mb-2 leading-tight">{product.name}</h2>
                             <p className={`text-sm font-medium ${estaAgotado ? 'text-red-500 font-bold' : 'text-zinc-400'}`}>
                               {estaAgotado ? "Sin unidades disponibles" : `Stock: ${product.stock}`}
                             </p>
                           </div>
-                          <div className={`text-3xl font-black shrink-0 ml-2 ${estaAgotado ? 'text-zinc-500' : 'text-green-400'}`}>
+                          <div className={`text-2xl lg:text-3xl font-black shrink-0 ml-2 ${estaAgotado ? 'text-zinc-500' : 'text-green-400'}`}>
                             ${product.price.toFixed(2)}
                           </div>
                         </div>
 
-                        {/* 🛠️ BOTÓN INTELIGENTE BLOQUEADO */}
                         <button
                           type="button"
                           disabled={estaAgotado}
@@ -355,7 +350,7 @@ function POSPage() {
                             addToCart(product)
                             toast.success(`${product.name} agregado`)
                           }}
-                          className={`mt-auto transition w-full py-4 rounded-2xl text-lg font-bold shrink-0 
+                          className={`mt-auto transition w-full py-3 lg:py-4 rounded-2xl text-base lg:text-lg font-bold shrink-0 
                             ${estaAgotado 
                               ? "bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-800/30" 
                               : "bg-white text-black hover:bg-zinc-200"
@@ -370,27 +365,31 @@ function POSPage() {
               </div>
 
               {/* Carrito */}
-              <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 shadow-2xl h-fit sticky top-6 flex flex-col max-h-[calc(100vh-4rem)]">
-                <div className="flex items-center gap-3 mb-8 shrink-0"><ShoppingCart size={30} /><h2 className="text-3xl font-black">Carrito</h2></div>
-                <div className="space-y-3 overflow-y-auto overflow-x-hidden pr-2 flex-1 mb-8">
-                  {cart.map((item) => (
-                    <div key={item.ID} className="bg-zinc-800 rounded-2xl p-4 flex flex-col gap-3">
-                      <div className="flex justify-between items-start gap-2">
-                        <p className="font-bold text-[15px] leading-tight flex-1 break-words pr-1">{item.name}</p>
-                        <div className="text-lg font-black text-green-400 shrink-0">${(item.quantity * item.price).toFixed(2)}</div>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <p className="text-zinc-400 text-sm font-medium">${item.price.toFixed(2)} c/u</p>
-                        <div className="flex items-center bg-zinc-900 rounded-lg p-1 shrink-0">
-                          <button onClick={() => decreaseQuantity(item.ID)} className="text-zinc-400 hover:text-white hover:bg-zinc-700 rounded p-1 transition"><Minus size={16} /></button>
-                          <span className="font-bold w-6 text-center text-zinc-300 text-sm">{item.quantity}</span>
-                          <button onClick={() => { const productoEnVivo = products.find((p) => p.ID === item.ID); const stockReal = productoEnVivo ? productoEnVivo.stock : item.stock; if (item.quantity >= stockReal) { toast.error(`Stock máximo alcanzado (${stockReal})`); return; } addToCart(item); }} className="text-zinc-400 hover:text-white hover:bg-zinc-700 rounded p-1 transition"><Plus size={16} /></button>
-                          <div className="w-[1px] h-4 bg-zinc-700 mx-1"></div>
-                          <button onClick={() => { removeFromCart(item.ID); toast.success("Item eliminado") }} className="text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded p-1 transition"><X size={16} /></button>
+              <div className="w-full lg:w-1/4 bg-zinc-900 border border-zinc-800 rounded-3xl p-6 shadow-2xl h-fit lg:sticky top-6 flex flex-col max-h-none lg:max-h-[calc(100vh-4rem)]">
+                <div className="flex items-center gap-3 mb-6 lg:mb-8 shrink-0"><ShoppingCart size={24} className="lg:w-[30px] lg:h-[30px]" /><h2 className="text-2xl lg:text-3xl font-black">Carrito</h2></div>
+                <div className="space-y-3 overflow-y-auto overflow-x-hidden pr-2 flex-1 mb-6 lg:mb-8 min-h-[150px]">
+                  {cart.length === 0 ? (
+                    <p className="text-zinc-500 text-center mt-10">Agrega productos para comenzar</p>
+                  ) : (
+                    cart.map((item) => (
+                      <div key={item.ID} className="bg-zinc-800 rounded-2xl p-4 flex flex-col gap-3">
+                        <div className="flex justify-between items-start gap-2">
+                          <p className="font-bold text-[15px] leading-tight flex-1 break-words pr-1">{item.name}</p>
+                          <div className="text-lg font-black text-green-400 shrink-0">${(item.quantity * item.price).toFixed(2)}</div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <p className="text-zinc-400 text-sm font-medium">${item.price.toFixed(2)} c/u</p>
+                          <div className="flex items-center bg-zinc-900 rounded-lg p-1 shrink-0">
+                            <button onClick={() => decreaseQuantity(item.ID)} className="text-zinc-400 hover:text-white hover:bg-zinc-700 rounded p-1 transition"><Minus size={16} /></button>
+                            <span className="font-bold w-6 text-center text-zinc-300 text-sm">{item.quantity}</span>
+                            <button onClick={() => { const productoEnVivo = products.find((p) => p.ID === item.ID); const stockReal = productoEnVivo ? productoEnVivo.stock : item.stock; if (item.quantity >= stockReal) { toast.error(`Stock máximo alcanzado (${stockReal})`); return; } addToCart(item); }} className="text-zinc-400 hover:text-white hover:bg-zinc-700 rounded p-1 transition"><Plus size={16} /></button>
+                            <div className="w-[1px] h-4 bg-zinc-700 mx-1"></div>
+                            <button onClick={() => { removeFromCart(item.ID); toast.success("Item eliminado") }} className="text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded p-1 transition"><X size={16} /></button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  )}
                 </div>
 
                 <div className="border-t border-zinc-800 pt-6 shrink-0">
@@ -410,7 +409,7 @@ function POSPage() {
 
                       setShowCheckoutModal(true);
                     }}
-                    className="bg-green-500 hover:bg-green-400 transition text-black font-black w-full py-5 rounded-2xl text-2xl shadow-2xl"
+                    className="bg-green-500 hover:bg-green-400 transition text-black font-black w-full py-4 lg:py-5 rounded-2xl text-xl lg:text-2xl shadow-2xl"
                   >
                     COBRAR
                   </button>
