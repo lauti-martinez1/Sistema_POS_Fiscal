@@ -1,9 +1,9 @@
 import { dbPromise, deleteOfflineSale, getOfflineSales } from "./db"
-import { createSale } from "./salesOffline"
+import api from "../services/api" // Importamos la api directamente
 
 export function startOfflineSync() {
   
-  // 🔄 Función que hace el trabajo de revisar y subir las ventas
+  // Función que hace el trabajo de revisar y subir las ventas
   async function realizarSincronizacion() {
     try {
       const offlineSales = await getOfflineSales()
@@ -17,18 +17,16 @@ export function startOfflineSync() {
         try {
           console.log(`📤 Subiendo venta guardada localmente...`)
 
-          // Intentamos mandarla al backend de Go
-          await createSale(sale)
+          // Usamos api.post directamente, igual que en el resto de tu app
+          await api.post("/sales", sale)
 
           // Si Go responde que la recibió bien (200 OK), la borramos del navegador
           await deleteOfflineSale(sale.id)
 
           console.log(`✅ Venta sincronizada con éxito en MySQL Workbench`)
         } catch (err) {
-          // Si Go sigue apagado, va a saltar acá.
-          // El sistema NO borra la venta del navegador, permitiendo que lo intente en la próxima vuelta.
           console.error(`❌ El servidor de Go sigue caído o no responde. Reintentando en 10 segundos...`)
-          break // Frenamos el bucle para no saturar con errores si el servidor no está listo
+          break 
         }
       }
     } catch (err) {
@@ -36,9 +34,9 @@ export function startOfflineSync() {
     }
   }
 
-  // 1. Por las dudas, mantenemos el disparador tradicional por si se corta el Wi-Fi
+  // 1. Disparador tradicional por si se corta el Wi-Fi
   window.addEventListener("online", realizarSincronizacion)
 
-  // 2. SOLUCIÓN LOCAL: Ejecutar una revisión automática cada 10 segundos
+  // 2. Revisión automática cada 10 segundos
   setInterval(realizarSincronizacion, 10000)
 }

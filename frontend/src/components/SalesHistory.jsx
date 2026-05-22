@@ -131,7 +131,7 @@ export default function SalesHistory() {
                   )}
                 </div>
 
-                <div className="flex-1">
+                <div className="flex-1 w-full overflow-hidden">
                   <p className="font-bold text-base md:text-lg text-white mb-1">
                     Venta #{sale.ID}
                     {sale.customer_name && (
@@ -140,25 +140,30 @@ export default function SalesHistory() {
                       </span>
                     )}
                   </p>
-                  <div className="text-xs md:text-sm text-zinc-400 flex flex-wrap items-center gap-2 mt-1 md:mt-0">
-                    <span className="truncate max-w-[200px] sm:max-w-none">
+                  
+                  {/* ACÁ ESTÁ LA MAGIA ARREGLADA: Párrafo arriba, carteles abajo */}
+                  <div className="text-xs md:text-sm text-zinc-400 mt-1 md:mt-0">
+                    <p className="break-words leading-relaxed mb-2">
                       {sale.items ? (
                         JSON.parse(sale.items).map(i => `${i.quantity}x ${i.name}`).join(", ")
                       ) : (
                         "Sin detalle"
                       )}
-                    </span>
-                    <span className="text-[10px] md:text-xs bg-zinc-700 px-2 py-0.5 rounded text-white font-bold tracking-wider">
-                      {sale.payment_type.toUpperCase()}
-                    </span>
-                    <span className={`text-[10px] md:text-xs px-2 py-0.5 rounded font-bold tracking-wider ${sale.receipt_type === 'factura' ? 'bg-blue-900/50 text-blue-400 border border-blue-800/50' : 'bg-zinc-900 text-zinc-500 border border-zinc-800'}`}>
-                      {sale.receipt_type === 'factura' ? 'FACTURA' : 'TICKET'}
-                    </span>
+                    </p>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-[10px] md:text-xs bg-zinc-700 px-2 py-0.5 rounded text-white font-bold tracking-wider">
+                        {sale.payment_type.toUpperCase()}
+                      </span>
+                      <span className={`text-[10px] md:text-xs px-2 py-0.5 rounded font-bold tracking-wider ${sale.receipt_type === 'factura' ? 'bg-blue-900/50 text-blue-400 border border-blue-800/50' : 'bg-zinc-900 text-zinc-500 border border-zinc-800'}`}>
+                        {sale.receipt_type === 'factura' ? 'FACTURA' : 'TICKET'}
+                      </span>
+                    </div>
                   </div>
+
                 </div>
               </div>
 
-              <div className="flex justify-between items-center md:block w-full md:w-auto border-t md:border-t-0 border-zinc-700/50 pt-3 md:pt-0">
+              <div className="flex justify-between items-center md:block w-full md:w-auto border-t md:border-t-0 border-zinc-700/50 pt-3 md:pt-0 shrink-0">
                 <p className="text-xs text-zinc-500 md:hidden">
                   {new Date(sale.CreatedAt).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}
                 </p>
