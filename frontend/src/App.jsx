@@ -7,7 +7,6 @@ import {
 
 import POSPage from "./pages/POSPage"
 import LoginPage from "./pages/LoginPage"
-import DashboardPage from "./pages/DashboardPage"
 
 function App() {
   const isAuthenticated = !!localStorage.getItem("token")
@@ -25,17 +24,6 @@ function App() {
         <Route
           path="/login"
           element={<LoginPage />}
-        />
-
-        <Route
-          path="/dashboard"
-          element={
-            isAuthenticated ? (
-              <DashboardPage />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
         />
 
         <Route
